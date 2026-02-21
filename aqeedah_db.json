@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "topic": "Islamic Creed (Aqeedah)",
+    "language_support": ["Arabic", "English", "Luganda"]
+  },
+  "articles_of_faith": [
+    {
+      "id": "aqeedah_1",
+      "title_arabic": "الإيمان بالله",
+      "title_english": "Belief in Allah",
+      "title_luganda": "Okukkiriza mu Allah",
+      "content_arabic": "أن تؤمن بأن الله هو الخالق الرازق المدبر لكل شيء، وأنه الواحد الأحد الفرد الصمد",
+      "content_english": "To believe that Allah is the Creator, Provider, and Controller of all things, and that He is One, Unique, Eternal, and Self-Sufficient.",
+      "content_luganda": "Okukkiriza nti Allah ye Mutonde, Omuyambi, n'Omulamuzi w'ebintu byonna, era nti Yye Omu, Taliiko mufaanana, Omulamu olw'ensi, so talina ky'ayagala.",
+      "quran_ref": "Quran 112:1-4",
+      "verified": true
+    },
+    {
+      "id": "aqeedah_2",
+      "title_arabic": "الإيمان بالملائكة",
+      "title_english": "Belief in Angels",
+      "title_luganda": "Okukkiriza mu Bamalayika",
+      "content_arabic": "أن تؤمن بأن الملائكة خلق من نور، يعبدون الله ولا يعصونه",
+      "content_english": "To believe that angels are created from light, they worship Allah and never disobey Him.",
+      "content_luganda": "Okukkiriza nti bamalayika batondebwa mu luzi, basinzira Allah so tebamuviirako.",
+      "quran_ref": "Quran 66:6",
+      "verified": true
+    },
+    {
+      "id": "aqeedah_3",
+      "title_arabic": "الإيمان بالكتب",
+      "title_english": "Belief in Divine Books",
+      "title_luganda": "Okukkiriza mu Bitabo eby'Allah",
+      "content_arabic": "أن تؤمن بأن الله أنزل كتبا على أنبيائه، وآخرها القرآن الكريم",
+      "content_english": "To believe that Allah revealed books to His prophets, the last of which is the Noble Quran.",
+      "content_luganda": "Okukkiriza nti Allah yawandiika ebitabo ku bannabbi be, era ekisembayo ye Quran entukuvu.",
+      "quran_ref": "Quran 2:4",
+      "verified": true
+    },
+    {
+      "id": "aqeedah_4",
+      "title_arabic": "الإيمان بالرسل",
+      "title_english": "Belief in Prophets",
+      "title_luganda": "Okukkiriza mu Bannabbi",
+      "content_arabic": "أن تؤمن بأن الله أرسل رسلا لهداية الناس، وآخرهم محمد صلى الله عليه وسلم",
+      "content_english": "To believe that Allah sent messengers to guide people, the last of whom is Muhammad (peace be upon him).",
+      "content_luganda": "Okukkiriza nti Allah yatuma bannabbi okutuukiriza abantu, era omusembayo ye Muhammad (emirembe gibeere ku ye).",
+      "quran_ref": "Quran 33:40",
+      "verified": true
+    },
+    {
+      "id": "aqeedah_5",
+      "title_arabic": "الإيمان باليوم الآخر",
+      "title_english": "Belief in the Last Day",
+      "title_luganda": "Okukkiriza mu Lunaku olw'Enkomerero",
+      "content_arabic": "أن تؤمن بالبعث والحساب والجنة والنار",
+      "content_english": "To believe in resurrection, accountability, Paradise, and Hellfire.",
+      "content_luganda": "Okukkiriza mu kuzuukira, okubalirirwa, Ejjanna, n'Omuliro.",
+      "quran_ref": "Quran 2:285",
+      "verified": true
+    },
+    {
+      "id": "aqeedah_6",
+      "title_arabic": "الإيمان بالقدر",
+      "title_english": "Belief in Divine Decree",
+      "title_luganda": "Okukkiriza mu Kibalirirwa kya Allah",
+      "content_arabic": "أن تؤمن بأن الله قدر كل شيء بعلمه وحكمته",
+      "content_english": "To believe that Allah has decreed all things with His knowledge and wisdom.",
+      "content_luganda": "Okukkiriza nti Allah yategeka ebintu byonna mu kumanya kwe n'obukugu bwe.",
+      "quran_ref": "Quran 54:49",
+      "verified": true
+    }
+  ],
+  "tawheed_basics": [
+    {
+      "id": "tawheed_1",
+      "title_arabic": "توحيد الربوبية",
+      "title_english": "Tawheed of Lordship",
+      "title_luganda": "Obumu mu Bwakabaka",
+      "content_arabic": "الإيمان بأن الله هو الخالق والرازق والمدبر الوحيد",
+      "content_english": "Belief that Allah is the only Creator, Provider, and Controller of all existence.",
+      "content_luganda": "Okukkiriza nti Allah ye Mutonde, Omuyambi, n'Omulamuzi yekka w'ebintu byonna.",
+      "verified": true
+    },
+    {
+      "id": "tawheed_2",
+      "title_arabic": "توحيد الألوهية",
+      "title_english": "Tawheed of Worship",
+      "title_luganda": "Obumu mu Kusinzira",
+      "content_arabic": "إفراد الله بالعبادة، فلا يصرف شيء من العبادة لغيره",
+      "content_english": "Directing all worship to Allah alone, not sharing any act of worship with others.",
+      "content_luganda": "Okusiinza Allah yekka, so tosiinza muntu wala kintu kye kimu ku ye.",
+      "verified": true
+    },
+    {
+      "id": "tawheed_3",
+      "title_arabic": "توحيد الأسماء والصفات",
+      "title_english": "Tawheed of Names & Attributes",
+      "title_luganda": "Obumu mu Mannya n'Ebifaananyi",
+      "content_arabic": "إثبات ما أثبته الله لنفسه من الأسماء والصفات دون تحريف أو تعطيل",
+      "content_english": "Affirming the names and attributes Allah affirmed for Himself, without distortion or denial.",
+      "content_luganda": "Okukakasa amannya n'ebifaananyi Allah by'ayogerera ku ye, nga tobyonoona wala okubigaana.",
+      "verified": true
+    },
+    {
+  "id": "shirk_basics",
+  "title_arabic": "أنواع الشرك",
+  "title_english": "Types of Shirk",
+  "title_luganda": "Ebika by'Okusiinza Ebirala",
+  "content_arabic": "الشرك الأكبر والشرك الأصغر",
+  "content_english": "Major shirk (worshipping others besides Allah) and minor shirk (showing off in worship).",
+  "content_luganda": "Okusiinza ebirala okusinga (okusinza ebirala okusinga Allah) n'okusiinza ebirala okutonotono (okweyagalira mu kusinza).",
+  "verified": true
+}
+  ]
+}

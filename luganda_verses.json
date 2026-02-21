@@ -1,34 +1,90 @@
 {
-  "1:1": {
-    "luganda": "Mu linnya lya Allah, Omusaasira, Omusaasira ennyo",
-    "surah": "Al-Fatiha"
+  "metadata": {
+    "language": "Luganda",
+    "translator": "Your Name / Source",
+    "last_updated": "2026-02-21",
+    "total_verses": 0
   },
-  "2:255": {
-    "luganda": "Allah - temuli mulungu wabula Yye, Omulamu, Omukuuma w'ebintu byonna. Tebasuula wala okwebaka. Ebiri mu ggulu n'ebiri mu nsi byonna bye bya Ye. Ani ayinza okuyingira mu kusaasira kwe okujjuvu okuggyanga nga Yye ayagadde? Amanyi ebyo ebiri mu maaso gaabwe n'ebyo ebijja. So tebalina kyebasobola okumanya ku by'okumanya kwe okujjuvu okuggyanga nga Yye ayagadde. Ekitiibwa kye kigazi okusinga eggulu n'ensi, so tekimukakata. Yye Mulinnyinnyo, Omukulu.",
-    "surah": "Al-Baqarah"
-  },
-  "112:1": {
-    "luganda": "Yogera: Yye Allah, Omu",
-    "surah": "Al-Ikhlas"
-  },
-  "112:2": {
-    "luganda": "Allah, Omwagalwa",
-    "surah": "Al-Ikhlas"
-  },
-  "112:3": {
-    "luganda": "Tazaala wala kuzaalibwa",
-    "surah": "Al-Ikhlas"
-  },
-  "112:4": {
-    "luganda": "So temuli muntu yenna amufaanana",
-    "surah": "Al-Ikhlas"
-  },
-  "113:1": {
-    "luganda": "Yogera: Nnoonya obukuumi mu Mukama w'okubira",
-    "surah": "Al-Falaq"
-  },
-  "114:1": {
-    "luganda": "Yogera: Nnoonya obukuumi mu Mukama w'abantu",
-    "surah": "An-Nas"
+  "verses": {
+    "1:1": {
+      "luganda": "Mu linnya lya Allah, Omusaasira, Omusaasira ennyo",
+      "surah_name": "Al-Fatiha",
+      "surah_name_luganda": "Okutandika",
+      "verified": true
+    },
+    
+    "1:2": {
+      "luganda": "Ensiimbi zonna za Allah, Omusaasira, Omusaasira ennyo",
+      "surah_name": "Al-Fatiha", 
+      "surah_name_luganda": "Okutandika",
+      "verified": true
+    },
+    "2:255": {
+      "luganda": "Allah - temuli mulungu wabula Yye, Omulamu, Omukuuma w'ebintu byonna...",
+      "surah_name": "Al-Baqarah",
+      "surah_name_luganda": "Enkoko",
+      "verified": true
+    },
+    "113:1": {
+  "luganda": "Yogera: Nnoonya obukuumi mu Mukama w'okubira",
+  "surah_name": "Al-Falaq",
+  "surah_name_luganda": "Ekiseera Ekizibu",
+  "verified": true
+},
+"113:2": {
+  "luganda": "Okuva mu bubi by'ebintu by'atonde",
+  "surah_name": "Al-Falaq",
+  "surah_name_luganda": "Ekiseera Ekizibu",
+  "verified": true
+},
+"114:1": {
+  "luganda": "Yogera: Nnoonya obukuumi mu Mukama w'abantu",
+  "surah_name": "An-Nas",
+  "surah_name_luganda": "Abantu",
+  "verified": true
+},
+"114:2": {
+  "luganda": "Omukama w'abantu",
+  "surah_name": "An-Nas",
+  "surah_name_luganda": "Abantu",
+  "verified": true
+},
+"112:1": {
+  "luganda": "Yogera: Yye Allah, Omu",
+  "surah_name": "Al-Ikhlas",
+  "surah_name_luganda": "Obumu",
+  "verified": true
+},
+"112:2": {
+  "luganda": "Allah, Omwagalwa",
+  "surah_name": "Al-Ikhlas",
+  "surah_name_luganda": "Obumu",
+  "verified": true
+},
+"112:3": {
+  "luganda": "Tazaala wala kuzaalibwa",
+  "surah_name": "Al-Ikhlas",
+  "surah_name_luganda": "Obumu",
+  "verified": true
+},
+"112:4": {
+  "luganda": "So temuli muntu yenna amufaanana",
+  "surah_name": "Al-Ikhlas",
+  "surah_name_luganda": "Obumu",
+  "verified": true
+},
+"1:6": {
+  "luganda": "Tutwale mu kkubo ery'omukisa",
+  "surah_name": "Al-Fatiha",
+  "surah_name_luganda": "Okutandika",
+  "verified": true
+},
+"1:7": {
+  "luganda": "Kkubo lyaabo ab'osiimibwa, si lyaabo ab'akasannyalaze wala ab'ebule",
+  "surah_name": "Al-Fatiha",
+  "surah_name_luganda": "Okutandika",
+  "verified": true
+}
+    
   }
 }

@@ -1,0 +1,45 @@
+{
+  "metadata": {
+    "source": "Sahih Al-Bukhari & Sahih Muslim",
+    "language_support": ["Arabic", "English", "Luganda"],
+    "last_updated": "2026-02-21"
+  },
+  "hadiths": {
+    "bukhari_1": {
+      "id": "Bukhari 1",
+      "narrator": "Umar ibn Al-Khattab",
+      "arabic": "إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى",
+      "english": "Actions are but by intention, and every person will have only what they intended.",
+      "luganda": "Ebikolwa birina okukolebwa olw'ekibiina, era buli muntu alina ky'akola olw'ekibiina kye.",
+      "topic": "Intentions",
+      "verified": true
+    },
+    "bukhari_2": {
+      "id": "Bukhari 2",
+      "narrator": "Abu Huraira",
+      "arabic": "من حسن إسلام المرء تركه ما لا يعنيه",
+      "english": "Part of a person's good Islam is leaving that which does not concern them.",
+      "luganda": "Ekimu ku bulungi bw'Obusiraamu bw'omuntu kwe kuleka ebyo ebitali bya kye.",
+      "topic": "Good Character",
+      "verified": true
+    },
+    "muslim_1": {
+      "id": "Muslim 1",
+      "narrator": "Abu Huraira",
+      "arabic": "المؤمن القوي خير وأحب إلى الله من المؤمن الضعيف",
+      "english": "The strong believer is better and more beloved to Allah than the weak believer, while there is good in both.",
+      "luganda": "Omukkiriza omuyinza mulungi era ayagibwa Allah okusinga omukkiriza omunafu, naye mu bombi mulimu obulungi.",
+      "topic": "Strength in Faith",
+      "verified": true
+    },
+    "bukhari_3": {
+  "id": "Bukhari 3",
+  "narrator": "Abdullah ibn Amr",
+  "arabic": "المسلم من سلم المسلمون من لسانه ويده",
+  "english": "A Muslim is one from whose tongue and hand other Muslims are safe.",
+  "luganda": "Omusiraamu ye oyo aba abalala aba Siraamu tebasobola kubona kubi ku lulimi lwe wala mu mukono gwe.",
+  "topic": "Muslim Character",
+  "verified": true
+}
+  }
+}
