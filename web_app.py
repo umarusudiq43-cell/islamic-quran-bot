@@ -1,21 +1,20 @@
 # web_app.py
-# Islamic Quran Bot - Beautiful Customized Version
+# Islamic Quran Bot - Arabic + English + Luganda
 
 import streamlit as st
 import requests
+import json
 import os
 
 # ============ CUSTOM CSS STYLING ============
 def add_custom_css():
     st.markdown("""
     <style>
-    /* Main background */
     .main {
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         min-height: 100vh;
     }
     
-    /* Header styling */
     h1 {
         color: #1e5631 !important;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -25,20 +24,8 @@ def add_custom_css():
     
     h2, h3 {
         color: #2d7a4f !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
-    /* Sidebar styling */
-    .css-1d391kg {
-        background-color: #1e5631;
-        color: white;
-    }
-    
-    .sidebar-content {
-        background-color: #1e5631;
-    }
-    
-    /* Card styling */
     .verse-card {
         background: white;
         padding: 30px;
@@ -48,21 +35,46 @@ def add_custom_css():
         border-left: 5px solid #d4af37;
     }
     
-    .verse-text {
-        font-size: 18px;
-        line-height: 2;
+    .arabic-text {
+        font-size: 28px;
+        line-height: 2.5;
+        text-align: right;
+        color: #1e5631;
+        font-family: 'Traditional Arabic', 'Arabic Typesetting', Arial, sans-serif;
+        margin: 20px 0;
+        direction: rtl;
+    }
+    
+    .english-text {
+        font-size: 16px;
+        line-height: 1.8;
         color: #333;
         font-style: italic;
-        margin: 20px 0;
+        margin: 15px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+    
+    .luganda-text {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #2d7a4f;
+        font-weight: 500;
+        margin: 15px 0;
+        padding: 15px;
+        background: #e8f5e9;
+        border-radius: 8px;
+        border-left: 4px solid #1e5631;
     }
     
     .verse-reference {
-        color: #1e5631;
+        color: #d4af37;
         font-weight: bold;
-        font-size: 16px;
+        font-size: 18px;
+        margin-bottom: 15px;
     }
     
-    /* Button styling */
     .stButton>button {
         background: linear-gradient(135deg, #1e5631 0%, #2d7a4f 100%);
         color: white;
@@ -70,16 +82,24 @@ def add_custom_css():
         padding: 12px 30px;
         border-radius: 8px;
         font-weight: 600;
-        transition: all 0.3s;
     }
     
-    .stButton>button:hover {
-        background: linear-gradient(135deg, #2d7a4f 0%, #1e5631 100%);
-        box-shadow: 0 4px 15px rgba(30, 86, 49, 0.3);
-        transform: translateY(-2px);
+    .footer {
+        text-align: center;
+        margin-top: 50px;
+        padding: 20px;
+        color: #1e5631;
+        font-size: 14px;
+        border-top: 2px solid #d4af37;
     }
     
-    /* Info boxes */
+    .custom-divider {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        margin: 30px 0;
+    }
+    
     .info-box {
         background: #e8f5e9;
         padding: 15px;
@@ -95,67 +115,54 @@ def add_custom_css():
         border-left: 4px solid #ffc107;
         margin: 15px 0;
     }
-    
-    .success-box {
-        background: #d4edda;
-        padding: 15px;
-        border-radius: 10px;
-        border-left: 4px solid #28a745;
-        margin: 15px 0;
-    }
-    
-    /* Footer */
-    .footer {
-        text-align: center;
-        margin-top: 50px;
-        padding: 20px;
-        color: #1e5631;
-        font-size: 14px;
-        border-top: 2px solid #d4af37;
-    }
-    
-    /* Divider */
-    .custom-divider {
-        border: none;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #d4af37, transparent);
-        margin: 30px 0;
-    }
-    
-    /* Search box */
-    .stTextInput>div>div>input {
-        border: 2px solid #d4af37;
-        border-radius: 8px;
-    }
-    
-    /* Number input */
-    .stNumberInput>div>div>input {
-        border: 2px solid #d4af37;
-        border-radius: 8px;
-    }
     </style>
     """, unsafe_allow_html=True)
 
 # ============ HELPER FUNCTIONS ============
 
-def get_quran_verse(surah_number, verse_number):
-    """Fetches a Quran verse in English"""
-    url = f"https://api.alquran.cloud/v1/ayah/{surah_number}:{verse_number}/en.sahih"
+def load_luganda_verses():
+    """Loads Luganda translations from JSON file"""
+    try:
+        with open("luganda_verses.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return {}
+
+def get_quran_verse_multi(surah_number, verse_number):
+    """Fetches Quran verse in Arabic, English, and Luganda"""
+    luganda_db = load_luganda_verses()
+    verse_key = f"{surah_number}:{verse_number}"
+    
+    arabic_url = f"https://api.alquran.cloud/v1/ayah/{surah_number}:{verse_number}/ar.alafasy"
+    english_url = f"https://api.alquran.cloud/v1/ayah/{surah_number}:{verse_number}/en.sahih"
     
     try:
-        response = requests.get(url)
-        data = response.json()
+        arabic_resp = requests.get(arabic_url)
+        english_resp = requests.get(english_url)
         
-        if data.get('code') == 200:
-            verse = data['data']
+        arabic_data = arabic_resp.json()
+        english_data = english_resp.json()
+        
+        if arabic_data.get('code') == 200 and english_data.get('code') == 200:
+            arabic_verse = arabic_data['data']
+            english_verse = english_data['data']
+            
+            luganda_text = ""
+            if verse_key in luganda_db:
+                luganda_text = luganda_db[verse_key]['luganda']
+            
             return {
-                "surah": verse['surah']['englishName'],
+                "surah": english_verse['surah']['englishName'],
                 "ayah": f"{surah_number}:{verse_number}",
-                "text": verse['text']
+                "arabic": arabic_verse['text'],
+                "english": english_verse['text'],
+                "luganda": luganda_text,
+                "has_luganda": verse_key in luganda_db
             }
         else:
             return None
     except Exception as e:
+        print(f"Error: {e}")
         return None
 
 def save_to_file(verse_data, filename="saved_verses.txt"):
@@ -164,7 +171,11 @@ def save_to_file(verse_data, filename="saved_verses.txt"):
         f.write(f"\n{'='*50}\n")
         f.write(f"Quran {verse_data['ayah']}\n")
         f.write(f"Surah: {verse_data['surah']}\n")
-        f.write(f"Text: {verse_data['text']}\n")
+        if 'arabic' in verse_data:
+            f.write(f"Arabic: {verse_data['arabic']}\n")
+        f.write(f"English: {verse_data['english']}\n")
+        if verse_data.get('luganda'):
+            f.write(f"Luganda: {verse_data['luganda']}\n")
         f.write(f"{'='*50}\n")
 
 def load_saved_verses(filename="saved_verses.txt"):
@@ -175,7 +186,7 @@ def load_saved_verses(filename="saved_verses.txt"):
             content = f.read()
             blocks = content.split("=" * 50)
             for block in blocks:
-                if "Quran" in block and "Text:" in block:
+                if "Quran" in block and ("English" in block or "Arabic" in block):
                     verses.append(block.strip())
     return verses
 
@@ -187,41 +198,14 @@ def search_verses(keyword, verses):
             results.append(verse)
     return results
 
-def get_ai_response(question):
-    """Simple AI responses for Islamic questions"""
-    question = question.lower()
-    
-    responses = {
-        "allah": "Allah is the One and Only God. See Ayat al-Kursi (2:255) for His attributes.",
-        "god": "Allah is the One and Only God. See Ayat al-Kursi (2:255) for His attributes.",
-        "prayer": "Prayer (Salah) is one of the 5 pillars of Islam. Perform it 5 times daily.",
-        "salah": "Prayer (Salah) is one of the 5 pillars of Islam. Perform it 5 times daily.",
-        "fast": "Fasting in Ramadan is obligatory for all adult Muslims. See Quran 2:183-185.",
-        "ramadan": "Fasting in Ramadan is obligatory for all adult Muslims. See Quran 2:183-185.",
-        "zakat": "Zakat is 2.5% of your savings given to the poor. It purifies your wealth.",
-        "charity": "Zakat is 2.5% of your savings given to the poor. It purifies your wealth.",
-        "patience": "Allah loves those who are patient. See Quran 2:153: 'Seek help through patience and prayer.'",
-        "sabr": "Allah loves those who are patient. See Quran 2:153: 'Seek help through patience and prayer.'",
-        "mercy": "Allah is Ar-Rahman (The Merciful) and Ar-Raheem (The Especially Merciful). See Al-Fatihah 1:1.",
-        "merciful": "Allah is Ar-Rahman (The Merciful) and Ar-Raheem (The Especially Merciful). See Al-Fatihah 1:1.",
-        "help": "I can help you: (1) Fetch Quran verses, (2) Search saved verses, (3) Answer basic Islamic questions."
-    }
-    
-    for key, value in responses.items():
-        if key in question:
-            return value
-    
-    return "I'm still learning! Try asking about Allah, prayer, fasting, zakat, patience, or mercy."
-
 # ============ PAGE CONFIGURATION ============
 st.set_page_config(
-    page_title="🤲 Islamic Quran Bot",
+    page_title="🤲 Islamic Quran Bot - Arabic & Luganda",
     page_icon="🤲",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Add custom CSS
 add_custom_css()
 
 # ============ SIDEBAR ============
@@ -235,26 +219,25 @@ with st.sidebar:
     
     option = st.selectbox(
         "Choose a feature:",
-        ["🏠 Home", "📖 Fetch Verse", "🔍 Search Verses", "🤖 Ask Question", "📚 All Saved Verses"],
+        ["🏠 Home", "📖 Fetch Verse", "🔍 Search Verses", "📚 All Saved Verses"],
         label_visibility="collapsed"
     )
     
     st.markdown("""
     <div style='border-top: 2px solid #d4af37; margin: 20px 0;'></div>
     <div style='text-align: center; color: white; font-size: 12px; padding: 10px;'>
-        Educational Tool<br>
-        Consult scholars for rulings
+        🇸 Arabic | 🇬 English | 🇺 Luganda<br>
+        Educational Tool
     </div>
     """, unsafe_allow_html=True)
 
 # ============ MAIN CONTENT ============
 
-# Header
 st.markdown("""
 <div style='text-align: center; padding: 30px 0;'>
     <h1 style='font-size: 48px; margin: 0;'>🤲 Islamic Quran Bot</h1>
     <p style='color: #666; font-size: 16px; margin: 10px 0;'>
-        Your companion for Quranic knowledge and Islamic guidance
+        🇸🇦 Arabic | 🇬🇧 English | 🇺🇬 Luganda
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -267,159 +250,101 @@ if option == "🏠 Home":
     <div style='text-align: center; padding: 40px;'>
         <h2 style='color: #1e5631;'>Welcome to Islamic Quran Bot</h2>
         <p style='font-size: 18px; color: #555; line-height: 1.8;'>
-            A beautiful tool to explore the Quran, save your favorite verses, 
-            and learn about Islam.
+            Read the Quran in Arabic (original), English, and Luganda.
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-        <div class='verse-card' style='text-align: center;'>
-            <h3 style='color: #1e5631;'>📖 Read Quran</h3>
-            <p>Fetch any verse from the Holy Quran with English translation</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class='verse-card' style='text-align: center;'>
-            <h3 style='color: #1e5631;'>🔍 Search</h3>
-            <p>Search through your saved verses by keywords</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-        <div class='verse-card' style='text-align: center;'>
-            <h3 style='color: #1e5631;'>🤖 Ask AI</h3>
-            <p>Get quick answers to basic Islamic questions</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class='info-box' style='text-align: center; margin-top: 40px;'>
-        <strong>📚 Start your journey by selecting an option from the sidebar!</strong>
-    </div>
-    """, unsafe_allow_html=True)
+    st.info("🇺🇬 **Luganda Translation**: We're building the Luganda database verse by verse.")
 
 # ============ FETCH VERSE ============
 elif option == "📖 Fetch Verse":
     st.markdown("<h2>📖 Fetch Quran Verse</h2>", unsafe_allow_html=True)
-    st.markdown("<p>Enter the Surah and Verse number to fetch from the Quran</p>", unsafe_allow_html=True)
+    st.markdown("<p>Get verse in Arabic, English, and Luganda</p>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     with col1:
-        surah = st.number_input("Surah Number", min_value=1, max_value=114, value=1, 
-                                help="Enter Surah number (1-114)")
+        surah = st.number_input("Surah Number", min_value=1, max_value=114, value=1)
     with col2:
-        verse_num = st.number_input("Verse Number", min_value=1, max_value=300, value=1,
-                                   help="Enter Verse number")
+        verse_num = st.number_input("Verse Number", min_value=1, max_value=300, value=1)
     
-    if st.button(" Get Verse"):
-        with st.spinner("Fetching verse from the Quran..."):
-            result = get_quran_verse(surah, verse_num)
+    if st.button("📖 Get Verse"):
+        with st.spinner("Fetching verse..."):
+            result = get_quran_verse_multi(surah, verse_num)
             
             if result:
                 st.markdown(f"""
                 <div class='verse-card'>
                     <div class='verse-reference'>📖 {result['surah']} {result['ayah']}</div>
-                    <div class='verse-text'>{result['text']}</div>
                 </div>
                 """, unsafe_allow_html=True)
+                
+                st.markdown(f"""
+                <div style='font-weight: bold; color: #1e5631; margin: 15px 0 10px 0;'>
+                    🇸🇦 Arabic (Original):
+                </div>
+                <div class='arabic-text'>{result['arabic']}</div>
+                """, unsafe_allow_html=True)
+                
+                st.markdown(f"""
+                <div style='font-weight: bold; color: #1e5631; margin: 15px 0 10px 0;'>
+                    🇬🇧 English Translation:
+                </div>
+                <div class='english-text'>{result['english']}</div>
+                """, unsafe_allow_html=True)
+                
+                if result['has_luganda']:
+                    st.markdown(f"""
+                    <div style='font-weight: bold; color: #2d7a4f; margin: 15px 0 10px 0;'>
+                        🇺🇬 Luganda Translation:
+                    </div>
+                    <div class='luganda-text'>{result['luganda']}</div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.info("🇺 **Luganda translation not available yet**")
                 
                 if st.button("💾 Save This Verse"):
                     save_to_file(result)
                     st.success("✅ Verse saved successfully!")
             else:
-                st.error("❌ Could not fetch verse. Please check the numbers.")
+                st.error("❌ Could not fetch verse.")
 
 # ============ SEARCH VERSES ============
 elif option == "🔍 Search Verses":
     st.markdown("<h2>🔍 Search Saved Verses</h2>", unsafe_allow_html=True)
-    st.markdown("<p>Search through your saved verses by keyword</p>", unsafe_allow_html=True)
     
-    keyword = st.text_input("Enter keyword (e.g., 'Allah', 'mercy', 'prayer'):", 
-                           placeholder="Type your search term...")
+    keyword = st.text_input("Enter keyword:", placeholder="e.g., 'Allah', 'mercy'")
     
     if st.button("🔍 Search"):
         verses = load_saved_verses()
         if not verses:
-            st.warning("⚠️ No saved verses yet. Fetch some verses first!")
+            st.warning("⚠️ No saved verses yet.")
         else:
             results = search_verses(keyword, verses)
             if results:
                 st.success(f"✅ Found {len(results)} result(s)!")
                 for i, result in enumerate(results, 1):
-                    st.markdown(f"""
-                    <div class='verse-card'>
-                        <div style='color: #666; font-size: 14px;'>Result {i}</div>
-                        {result}
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.markdown(f"<div class='verse-card'>{result}</div>", unsafe_allow_html=True)
             else:
-                st.warning(f"⚠️ No verses found matching '{keyword}'")
-
-# ============ ASK QUESTION ============
-elif option == "🤖 Ask Question":
-    st.markdown("<h2>🤖 Ask Islamic Question</h2>", unsafe_allow_html=True)
-    st.markdown("<p>Get quick answers to basic Islamic questions</p>", unsafe_allow_html=True)
-    
-    question = st.text_input("Your question:", 
-                            placeholder="e.g., What is prayer? How many times do we pray?")
-    
-    if st.button("💬 Get Answer"):
-        if question:
-            with st.spinner("Thinking..."):
-                answer = get_ai_response(question)
-                st.markdown(f"""
-                <div class='info-box'>
-                    <strong>🤖 Bot:</strong><br>
-                    {answer}
-                </div>
-                """, unsafe_allow_html=True)
-                
-                st.markdown("""
-                <div class='warning-box'>
-                    <strong>⚠️ Disclaimer:</strong> This is educational guidance only. 
-                    For personal rulings, please consult a qualified scholar.
-                </div>
-                """, unsafe_allow_html=True)
-        else:
-            st.warning("⚠️ Please enter a question first.")
+                st.warning(f"⚠️ No verses found.")
 
 # ============ VIEW ALL VERSES ============
 elif option == "📚 All Saved Verses":
     st.markdown("<h2>📚 All Saved Verses</h2>", unsafe_allow_html=True)
-    st.markdown("<p>View all the verses you've saved</p>", unsafe_allow_html=True)
     
     verses = load_saved_verses()
     if verses:
         st.success(f"✅ You have {len(verses)} saved verse(s)!")
-        for i, verse in enumerate(verses, 1):
-            st.markdown(f"""
-            <div class='verse-card'>
-                <div style='color: #d4af37; font-size: 14px; margin-bottom: 10px;'>
-                    ⭐ Saved Verse {i}
-                </div>
-                {verse}
-            </div>
-            """, unsafe_allow_html=True)
+        for verse in verses:
+            st.markdown(f"<div class='verse-card'>{verse}</div>", unsafe_allow_html=True)
     else:
-        st.markdown("""
-        <div class='warning-box' style='text-align: center; padding: 40px;'>
-            <h3 style='color: #856404;'>📭 No saved verses yet</h3>
-            <p>Start by fetching verses from the Quran using the "Fetch Verse" option!</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.warning("📭 No saved verses yet.")
 
 # ============ FOOTER ============
 st.markdown("""
 <div class='footer'>
     <p style='margin: 0;'>
-        Built with ❤️ for Islamic knowledge | Educational tool only<br>
+        Built with ❤️ for Islamic knowledge | 🇸🇬🇧🇬<br>
         <small>May Allah make this beneficial for all</small> 🤲
     </p>
 </div>
