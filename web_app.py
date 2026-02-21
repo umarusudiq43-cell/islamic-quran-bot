@@ -555,113 +555,142 @@ elif section == "🕌 Aqeedah":
                 st.success("✅ Saved!")
     else:
         st.info("🕌 Aqeedah content is being prepared.")
-            # ============ AI Q&A SECTION ============
+# ============ AI Q&A SECTION ============
 elif section == "🤖 AI Q&A":
-    st.markdown("<h2>🤖 Ask Islamic Questions</h2>", unsafe_allow_html=True)
+    st.markdown("<h2>🤖 Ask Islamic Questions (AI-Powered)</h2>", unsafe_allow_html=True)
     
-    knowledge_db = load_islamic_knowledge()
+    # Import AI helper
+    from ai_helper import get_ai_answer, check_ollama_running, get_available_models, translate_answer
     
-    # Show topic suggestions
-    st.markdown("### 💡 Popular Topics:")
-    topics = get_topic_suggestions(knowledge_db)
+    # Check if Ollama is running
+    if not check_ollama_running():
+        st.error("""
+        ❌ **Ollama is not running!**
+        
+        **To fix:**
+        1. Open Ollama application from Start Menu
+        2. Or run in terminal: `ollama serve`
+        3. Then refresh this page
+        """)
+        st.stop()  # Stop execution if Ollama not running
     
-    # Display topic chips
-    cols = st.columns(3)
-    for i, topic in enumerate(topics[:6]):  # Show first 6
-        with cols[i % 3]:
-            if st.button(f"{topic['arabic']} {topic['title']}"):
-                st.session_state.selected_topic = topic['key']
-    
-    # Check if topic selected from chips
-    if 'selected_topic' in st.session_state:
-        topic_data = knowledge_db["topics"].get(st.session_state.selected_topic)
-        if topic_data:
-            st.markdown(f"""
-            <div class='aqeedah-card'>
-                <div class='verse-reference'>🕌 {topic_data['english'].split(' ')[0]}</div>
-                <div style='font-weight:bold;color:#1e5631;margin:15px 0 10px 0'>
-                    🇸🇦 {topic_data['arabic']}:
-                </div>
-                <div class='arabic-text'>{topic_data['english']}</div>
-                <div style='font-weight:bold;color:#1e5631;margin:15px 0 10px 0'>
-                    🇬🇧 English:
-                </div>
-                <div class='english-text'>{topic_data['english']}</div>
-            """, unsafe_allow_html=True)
-            
-            if topic_data.get('luganda'):
-                st.markdown(f"""
-                <div style='font-weight:bold;color:#2d7a4f;margin:15px 0 10px 0'>
-                    🇺🇬 Luganda:
-                </div>
-                <div class='luganda-text'>{topic_data['luganda']}</div>
-                </div>
-                """, unsafe_allow_html=True)
-            else:
-                st.markdown("</div>", unsafe_allow_html=True)
-            
-            if topic_data.get('quran_refs'):
-                st.caption(f"📖 References: {', '.join(topic_data['quran_refs'])}")
-            
-            if st.button("✅ Got It!"):
-                st.session_state.selected_topic = None
+    # Show available models
+    models = get_available_models()
+    if models:
+        st.success(f"✅ Ollama connected! Available models: {', '.join(models)}")
+    else:
+        st.warning("⚠️ No models found. Run: `ollama pull llama3`")
     
     st.markdown("---")
     
-    # Ask question input
-    st.markdown("### ❓ Or Ask Your Question:")
-    question = st.text_input(
-        "Type your question:",
-        placeholder="e.g., How many times do we pray? What is Zakat?",
-        label_visibility="collapsed"
+    # Topic suggestions
+    st.markdown("### 💡 Popular Topics:")
+    topic_suggestions = [
+        "Prayer (Salah)", "Fasting (Ramadan)", "Zakat", "Hajj",
+        "Tawheed", "Patience (Sabr)", "Charity (Sadaqah)",
+        "Respecting Parents", "Dealing with Anger", "Repentance"
+    ]
+    
+    cols = st.columns(3)
+    for i, topic in enumerate(topic_suggestions):
+        with cols[i % 3]:
+            if st.button(f"📌 {topic}", key=f"topic_{i}"):
+                st.session_state.quick_question = f"Explain {topic} in Islam with Quran and Hadith evidence"
+    
+    # Quick question from topic chip
+    if 'quick_question' in st.session_state:
+        question = st.session_state.quick_question
+        st.session_state.quick_question = None  # Clear after use
+    else:
+        question = st.text_input(
+            "❓ Your Question:",
+            placeholder="e.g., How many times do we pray? What is the wisdom behind fasting?",
+            label_visibility="collapsed"
+        )
+    
+    # Language option
+    answer_language = st.selectbox(
+        "🌐 Answer Language:",
+        ["English", "Luganda", "Arabic"],
+        index=0
     )
     
-    if st.button("🔍 Get Answer"):
+    if st.button("🔍 Get AI Answer"):
         if question:
-            with st.spinner("🤖 Thinking..."):
-                answer = ai_search_answer(question, knowledge_db)
+            with st.spinner("🤖 AI is thinking... (this may take 10-30 seconds)"):
+                # Get AI answer
+                result = get_ai_answer(question)
                 
-                if answer:
-                    st.success("✅ Found relevant answer!")
+                if result['success']:
+                    answer = result['answer']
+                    
+                    # Translate if needed
+                    if answer_language == "Luganda":
+                        with st.spinner("🇺🇬 Translating to Luganda..."):
+                            answer = translate_answer(answer, "luganda")
+                    elif answer_language == "Arabic":
+                        with st.spinner("🇸🇦 Translating to Arabic..."):
+                            answer = translate_answer(answer, "arabic")
+                    
+                    # Display answer
+                    st.success("✅ Answer Generated!")
+                    
                     st.markdown(f"""
                     <div class='aqeedah-card'>
                         <div style='font-weight:bold;color:#1e5631;margin:15px 0 10px 0'>
-                            🇸🇦 Arabic:
+                            🤖 AI Answer ({answer_language}):
                         </div>
-                        <div class='arabic-text'>{answer['arabic']}</div>
-                        <div style='font-weight:bold;color:#1e5631;margin:15px 0 10px 0'>
-                            🇬🇧 English:
+                        <div style='font-size:16px;line-height:1.8;color:#333'>
+                            {answer.replace(chr(10), '<br>')}
                         </div>
-                        <div class='english-text'>{answer['english']}</div>
+                    </div>
                     """, unsafe_allow_html=True)
                     
-                    if answer.get('luganda'):
-                        st.markdown(f"""
-                        <div style='font-weight:bold;color:#2d7a4f;margin:15px 0 10px 0'>
-                            🇺🇬 Luganda:
-                        </div>
-                        <div class='luganda-text'>{answer['luganda']}</div>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    else:
-                        st.markdown("</div>", unsafe_allow_html=True)
+                    # Save option
+                    if st.button("💾 Save This Answer"):
+                        with open("saved_ai_answers.txt", "a", encoding="utf-8") as f:
+                            f.write(f"\n{'='*50}\n")
+                            f.write(f"Question: {question}\n")
+                            f.write(f"Language: {answer_language}\n")
+                            f.write(f"Answer: {answer}\n")
+                            f.write(f"{'='*50}\n")
+                        st.success("✅ Answer saved!")
                     
-                    if answer.get('quran_refs'):
-                        st.caption(f"📖 Quran: {', '.join(answer['quran_refs'])}")
-                    if answer.get('hadith_refs'):
-                        st.caption(f"📚 Hadith: {', '.join(answer['hadith_refs'])}")
+                    # Disclaimer
+                    st.markdown("""
+                    <div class='warning-box'>
+                        <strong>⚠️ Important Disclaimer:</strong><br>
+                        This AI answer is for <strong>educational purposes only</strong>. 
+                        AI can make mistakes. For personal fatwas and religious rulings, 
+                        <strong>always consult a qualified Islamic scholar</strong> in your area.
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
                 else:
-                    st.warning("⚠️ I'm still learning! Try asking about: Prayer, Fasting, Zakat, Hajj, Tawheed, Patience, Charity, Parents, Truthfulness, or Repentance.")
-                    st.info("💡 Tip: Browse the topic chips above for quick answers!")
+                    st.error(f"❌ AI Error: {result['error']}")
+                    st.info("""
+                    **Troubleshooting:**
+                    1. Make sure Ollama is running (check Start Menu)
+                    2. Try: `ollama run llama3` in terminal to test
+                    3. Restart Ollama if needed
+                    """)
         else:
             st.warning("⚠️ Please type a question first.")
     
+    # Show saved answers
+    if os.path.exists("saved_ai_answers.txt"):
+        with st.expander("📚 View My Saved AI Answers"):
+            with open("saved_ai_answers.txt", "r", encoding="utf-8") as f:
+                st.markdown(f"<pre>{f.read()}</pre>", unsafe_allow_html=True)
+    
+    st.markdown("---")
     st.markdown("""
-    <div class='warning-box'>
-        <strong>⚠️ Disclaimer:</strong> This is educational guidance only. 
-        For personal fatwas, consult a qualified scholar.
-    </div>
-    """, unsafe_allow_html=True)
+    ### ℹ️ How This Works:
+    - **AI Model:** Llama 3 (running locally on your computer)
+    - **Privacy:** All processing happens on your device - no data sent to cloud
+    - **Cost:** 100% FREE
+    - **Accuracy:** AI is trained on general knowledge, but **always verify with scholars**
+    """)
 # ============ SEARCH ALL ============
 elif section == "🔍 Search All":
     st.markdown("<h2>🔍 Search Islamic Knowledge</h2>", unsafe_allow_html=True)
