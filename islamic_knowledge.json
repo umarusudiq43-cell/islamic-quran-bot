@@ -1,0 +1,101 @@
+{
+  "topics": {
+    "prayer": {
+      "arabic": "الصلاة",
+      "english": "Prayer (Salah) is one of the 5 pillars of Islam. It is obligatory to pray 5 times daily: Fajr, Dhuhr, Asr, Maghrib, and Isha.",
+      "luganda": "Okusiima (Salah) kimu ku bintu 5 eby'omuwendo mu Siraamu. Kisaana okusiima emirundi 5 buli lunaku: Fajr, Dhuhr, Asr, Maghrib, ne Isha.",
+      "quran_refs": ["Quran 2:43", "Quran 20:14"],
+      "hadith_refs": ["Bukhari 8:349"]
+    },
+    "fasting": {
+      "arabic": "الصوم",
+      "english": "Fasting in Ramadan is obligatory for all adult Muslims. It teaches self-control, patience, and empathy for the poor.",
+      "luganda": "Okusiiba mu Ramadan kya buli Musiraamu omukulu. Kyigiriza okwekema, okugumiikiriza, n'okusaasira abavu.",
+      "quran_refs": ["Quran 2:183-185"],
+      "hadith_refs": ["Bukhari 31:125"]
+    },
+    "zakat": {
+      "arabic": "الزكاة",
+      "english": "Zakat is 2.5% of your savings given to the poor annually. It purifies wealth and helps redistribute resources.",
+      "luganda": "Zakat ye 2.5% ku by'ofunye obiwadde abavu buli mwaka. Ekuza obugagga n'eyamba okugabana eby'obugagga.",
+      "quran_refs": ["Quran 2:110", "Quran 9:60"],
+      "hadith_refs": ["Bukhari 24:54"]
+    },
+    "hajj": {
+      "arabic": "الحج",
+      "english": "Hajj is pilgrimage to Mecca, obligatory once in lifetime for those who are able. It occurs in Dhul-Hijjah.",
+      "luganda": "Hajj ye kugenda e Mecca, kya buli muntu asobola omulundi gumu mu bulamu. Kukolebwa mu mwezi gwa Dhul-Hijjah.",
+      "quran_refs": ["Quran 3:97"],
+      "hadith_refs": ["Bukhari 25:1"]
+    },
+    "tawheed": {
+      "arabic": "التوحيد",
+      "english": "Tawheed is the belief in the Oneness of Allah. It is the foundation of Islamic faith.",
+      "luganda": "Tawheed ye kukkiriza mu bumu bwa Allah. Ye nsibo y'okukkiriza kw'Obusiraamu.",
+      "quran_refs": ["Quran 112:1-4"],
+      "hadith_refs": ["Bukhari 8:477"]
+    },
+    "patience": {
+      "arabic": "الصبر",
+      "english": "Patience (Sabr) is highly rewarded in Islam. Allah is with those who are patient.",
+      "luganda": "Okugumiikiriza (Sabr) kuli mukisa munene mu Siraamu. Allah ali n'abo abagumiikiriza.",
+      "quran_refs": ["Quran 2:153", "Quran 39:10"],
+      "hadith_refs": ["Muslim 4:2236"]
+    },
+    "charity": {
+      "arabic": "الصدقة",
+      "english": "Charity (Sadaqah) is voluntary giving beyond Zakat. Even a smile is charity.",
+      "luganda": "Ekisa (Sadaqah) kwe kuwa okusinga Zakat. N'okuseka kye kisa.",
+      "quran_refs": ["Quran 2:261-274"],
+      "hadith_refs": ["Muslim 12:2588"]
+    },
+    "parents": {
+      "arabic": "الوالدين",
+      "english": "Honoring parents is one of the greatest obligations in Islam, second only to worship of Allah.",
+      "luganda": "Okussa abazadde ekitiibwe kimu ku bintu ebikulu mu Siraamu, ekisinga kusinza Allah kyekka.",
+      "quran_refs": ["Quran 17:23-24"],
+      "hadith_refs": ["Bukhari 8:2"]
+    },
+    "truthfulness": {
+      "arabic": "الصدق",
+      "english": "Truthfulness leads to righteousness, and righteousness leads to Paradise.",
+      "luganda": "Okugamba iviri kituuka ku butuukirivu, n'obutuukirivu butuuka ku Ejjanna.",
+      "quran_refs": ["Quran 33:70"],
+      "hadith_refs": ["Bukhari 8:116"]
+    },
+    "repentance": {
+      "arabic": "التوبة",
+      "english": "Allah accepts repentance from those who sin out of ignorance and repent soon after.",
+      "luganda": "Allah akkiriza okwenenya kuva eri abo abonoona olw'obusiru ne beenenya vuba.",
+      "quran_refs": ["Quran 4:17", "Quran 39:53"],
+      "hadith_refs": ["Muslim 37:6626"]
+    }
+  },
+  "common_questions": [
+    {
+      "question": "How many times do we pray?",
+      "keywords": ["pray", "prayer", "salah", "times", "daily"],
+      "answer_topic": "prayer"
+    },
+    {
+      "question": "What is fasting?",
+      "keywords": ["fast", "fasting", "ramadan", "siyam"],
+      "answer_topic": "fasting"
+    },
+    {
+      "question": "What is Zakat?",
+      "keywords": ["zakat", "charity", "poor", "wealth", "2.5%"],
+      "answer_topic": "zakat"
+    },
+    {
+      "question": "What is Hajj?",
+      "keywords": ["hajj", "pilgrimage", "mecca", "kaaba"],
+      "answer_topic": "hajj"
+    },
+    {
+      "question": "What is Tawheed?",
+      "keywords": ["tawheed", "oneness", "allah", "one god"],
+      "answer_topic": "tawheed"
+    }
+  ]
+}

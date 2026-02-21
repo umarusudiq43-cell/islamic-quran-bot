@@ -120,6 +120,91 @@ def add_custom_css():
         border-left: 4px solid #ffc107;
         margin: 15px 0;
     }
+        /* ============ MOBILE OPTIMIZATION ============ */
+    
+    /* Responsive adjustments for tablets and phones */
+    @media (max-width: 768px) {
+        /* Adjust header size */
+        h1 {
+            font-size: 32px !important;
+        }
+        
+        h2 {
+            font-size: 24px !important;
+        }
+        
+        /* Make cards more compact */
+        .verse-card, .hadith-card, .aqeedah-card {
+            padding: 20px !important;
+            margin: 15px 0 !important;
+        }
+        
+        /* Arabic text slightly smaller on mobile but still readable */
+        .arabic-text {
+            font-size: 36px !important;
+            line-height: 2.8 !important;
+        }
+        
+        /* Make buttons larger for touch */
+        .stButton>button {
+            padding: 15px 40px !important;
+            font-size: 16px !important;
+            min-height: 50px !important;
+        }
+        
+        /* Adjust columns to stack on mobile */
+        .stColumns {
+            flex-direction: column !important;
+        }
+        
+        /* Sidebar adjustments */
+        section[data-testid="stSidebar"] {
+            width: 280px !important;
+        }
+        
+        /* Make input fields larger for touch */
+        .stTextInput>div>div>input,
+        .stNumberInput>div>div>input {
+            font-size: 16px !important;
+            min-height: 45px !important;
+        }
+        
+        /* Topic tags */
+        .topic-tag {
+            padding: 8px 20px !important;
+            font-size: 14px !important;
+        }
+        
+        /* Footer */
+        .footer {
+            font-size: 12px !important;
+            padding: 15px !important;
+        }
+    }
+    
+    /* Extra small phones */
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 26px !important;
+        }
+        
+        h2 {
+            font-size: 20px !important;
+        }
+        
+        .arabic-text {
+            font-size: 30px !important;
+        }
+        
+        .verse-card, .hadith-card, .aqeedah-card {
+            padding: 15px !important;
+        }
+        
+        /* Full width buttons on very small screens */
+        .stButton>button {
+            width: 100% !important;
+        }
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -146,6 +231,47 @@ def load_aqeedah_db():
             return json.load(f)
     except:
         return {"articles_of_faith": [], "tawheed_basics": []}
+    # ============ AI KNOWLEDGE FUNCTIONS ============
+
+def load_islamic_knowledge():
+    """Load Islamic knowledge base"""
+    try:
+        with open("islamic_knowledge.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return {"topics": {}, "common_questions": []}
+
+def ai_search_answer(question, knowledge_db):
+    """Smart AI search that finds relevant topics"""
+    question_lower = question.lower()
+    
+    # Check common questions first
+    for qa in knowledge_db.get("common_questions", []):
+        for keyword in qa["keywords"]:
+            if keyword in question_lower:
+                topic_key = qa["answer_topic"]
+                if topic_key in knowledge_db.get("topics", {}):
+                    return knowledge_db["topics"][topic_key]
+    
+    # Search topic keywords
+    for topic_key, topic_data in knowledge_db.get("topics", {}).items():
+        if (topic_key in question_lower or 
+            topic_data.get("english", "").lower()[:50] in question_lower):
+            return topic_data
+    
+    # No match found
+    return None
+
+def get_topic_suggestions(knowledge_db):
+    """Get list of available topics for navigation"""
+    topics = []
+    for key, data in knowledge_db.get("topics", {}).items():
+        topics.append({
+            "key": key,
+            "title": data.get("english", "").split(" ")[0],  # First word
+            "arabic": data.get("arabic", "")
+        })
+    return topics
 
 # ============ QURAN FUNCTIONS ============
 
@@ -242,10 +368,9 @@ def save_aqeedah(aqeedah_data):
 st.set_page_config(
     page_title="🤲 Tawheed Academy Bot",
     page_icon="🤲",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="centered",  # Changed from "wide" to "centered" for mobile
+    initial_sidebar_state="collapsed"  # Sidebar collapsed by default on mobile
 )
-add_custom_css()
 
 # ============ SIDEBAR ============
 with st.sidebar:
@@ -258,7 +383,7 @@ with st.sidebar:
     
     section = st.selectbox(
         "Choose a section:",
-        ["🏠 Home", "📖 Quran", "📚 Hadith", "🕌 Aqeedah", "🔍 Search All", "💾 My Saved"],
+        ["🏠 Home", "📖 Quran", "📚 Hadith", "🕌 Aqeedah", "🤖 AI Q&A","🔍 Search All", "💾 My Saved"],
         label_visibility="collapsed"
     )
     
@@ -315,6 +440,12 @@ if section == "🏠 Home":
             <p>Understand the 6 Articles of Faith & Tawheed</p>
         </div>
         """, unsafe_allow_html=True)
+            # Mobile-friendly tip
+    st.markdown("""
+    <div class='info-box' style='text-align: center;'>
+        <strong>📱 Mobile Tip:</strong> Tap the menu icon (☰) to access all sections!
+    </div>
+    """, unsafe_allow_html=True)
 
 # ============ QURAN SECTION ============
 elif section == "📖 Quran":
@@ -424,6 +555,113 @@ elif section == "🕌 Aqeedah":
                 st.success("✅ Saved!")
     else:
         st.info("🕌 Aqeedah content is being prepared.")
+            # ============ AI Q&A SECTION ============
+elif section == "🤖 AI Q&A":
+    st.markdown("<h2>🤖 Ask Islamic Questions</h2>", unsafe_allow_html=True)
+    
+    knowledge_db = load_islamic_knowledge()
+    
+    # Show topic suggestions
+    st.markdown("### 💡 Popular Topics:")
+    topics = get_topic_suggestions(knowledge_db)
+    
+    # Display topic chips
+    cols = st.columns(3)
+    for i, topic in enumerate(topics[:6]):  # Show first 6
+        with cols[i % 3]:
+            if st.button(f"{topic['arabic']} {topic['title']}"):
+                st.session_state.selected_topic = topic['key']
+    
+    # Check if topic selected from chips
+    if 'selected_topic' in st.session_state:
+        topic_data = knowledge_db["topics"].get(st.session_state.selected_topic)
+        if topic_data:
+            st.markdown(f"""
+            <div class='aqeedah-card'>
+                <div class='verse-reference'>🕌 {topic_data['english'].split(' ')[0]}</div>
+                <div style='font-weight:bold;color:#1e5631;margin:15px 0 10px 0'>
+                    🇸🇦 {topic_data['arabic']}:
+                </div>
+                <div class='arabic-text'>{topic_data['english']}</div>
+                <div style='font-weight:bold;color:#1e5631;margin:15px 0 10px 0'>
+                    🇬🇧 English:
+                </div>
+                <div class='english-text'>{topic_data['english']}</div>
+            """, unsafe_allow_html=True)
+            
+            if topic_data.get('luganda'):
+                st.markdown(f"""
+                <div style='font-weight:bold;color:#2d7a4f;margin:15px 0 10px 0'>
+                    🇺🇬 Luganda:
+                </div>
+                <div class='luganda-text'>{topic_data['luganda']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown("</div>", unsafe_allow_html=True)
+            
+            if topic_data.get('quran_refs'):
+                st.caption(f"📖 References: {', '.join(topic_data['quran_refs'])}")
+            
+            if st.button("✅ Got It!"):
+                st.session_state.selected_topic = None
+    
+    st.markdown("---")
+    
+    # Ask question input
+    st.markdown("### ❓ Or Ask Your Question:")
+    question = st.text_input(
+        "Type your question:",
+        placeholder="e.g., How many times do we pray? What is Zakat?",
+        label_visibility="collapsed"
+    )
+    
+    if st.button("🔍 Get Answer"):
+        if question:
+            with st.spinner("🤖 Thinking..."):
+                answer = ai_search_answer(question, knowledge_db)
+                
+                if answer:
+                    st.success("✅ Found relevant answer!")
+                    st.markdown(f"""
+                    <div class='aqeedah-card'>
+                        <div style='font-weight:bold;color:#1e5631;margin:15px 0 10px 0'>
+                            🇸🇦 Arabic:
+                        </div>
+                        <div class='arabic-text'>{answer['arabic']}</div>
+                        <div style='font-weight:bold;color:#1e5631;margin:15px 0 10px 0'>
+                            🇬🇧 English:
+                        </div>
+                        <div class='english-text'>{answer['english']}</div>
+                    """, unsafe_allow_html=True)
+                    
+                    if answer.get('luganda'):
+                        st.markdown(f"""
+                        <div style='font-weight:bold;color:#2d7a4f;margin:15px 0 10px 0'>
+                            🇺🇬 Luganda:
+                        </div>
+                        <div class='luganda-text'>{answer['luganda']}</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    else:
+                        st.markdown("</div>", unsafe_allow_html=True)
+                    
+                    if answer.get('quran_refs'):
+                        st.caption(f"📖 Quran: {', '.join(answer['quran_refs'])}")
+                    if answer.get('hadith_refs'):
+                        st.caption(f"📚 Hadith: {', '.join(answer['hadith_refs'])}")
+                else:
+                    st.warning("⚠️ I'm still learning! Try asking about: Prayer, Fasting, Zakat, Hajj, Tawheed, Patience, Charity, Parents, Truthfulness, or Repentance.")
+                    st.info("💡 Tip: Browse the topic chips above for quick answers!")
+        else:
+            st.warning("⚠️ Please type a question first.")
+    
+    st.markdown("""
+    <div class='warning-box'>
+        <strong>⚠️ Disclaimer:</strong> This is educational guidance only. 
+        For personal fatwas, consult a qualified scholar.
+    </div>
+    """, unsafe_allow_html=True)
 # ============ SEARCH ALL ============
 elif section == "🔍 Search All":
     st.markdown("<h2>🔍 Search Islamic Knowledge</h2>", unsafe_allow_html=True)
