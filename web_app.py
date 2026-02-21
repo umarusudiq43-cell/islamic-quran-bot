@@ -32,13 +32,14 @@ def add_custom_css():
         border-left: 5px solid #d4af37;
     }
     .arabic-text {
-        font-size: 28px;
-        line-height: 2.5;
-        text-align: right;
-        color: #1e5631;
-        font-family: 'Traditional Arabic', 'Arabic Typesetting', Arial, sans-serif;
-        margin: 20px 0;
-        direction: rtl;
+    font-size: 40px;  /* ← Increased from 28px to 40px */
+    line-height: 3;   /* ← Increased for better spacing */
+    text-align: right;
+    color: #1e5631;
+    font-family: 'Traditional Arabic', 'Arabic Typesetting', Arial, sans-serif;
+    margin: 20px 0;
+    direction: rtl;
+    font-weight: 500;  /* ← Slightly bolder for clarity */
     }
     .english-text {
         font-size: 16px;
